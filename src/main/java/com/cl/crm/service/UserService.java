@@ -7,6 +7,7 @@ import com.cl.crm.modal.UserModal;
 import com.cl.crm.po.User;
 import com.cl.crm.utils.AssertUtil;
 import com.cl.crm.utils.Md5Util;
+import com.cl.crm.utils.UserIDBase64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,6 @@ public class UserService extends BaseService<User,Integer> {
     }
 
     private UserModal buildUserModelInfo(User user) {
-        return new UserModal(Integer.toString(user.getId()),user.getUserName(),user.getTrueName());
+        return new UserModal(UserIDBase64.encoderUserID(user.getId()),user.getUserName(),user.getTrueName());
     }
 }

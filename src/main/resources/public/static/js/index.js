@@ -19,6 +19,10 @@ function login() {
         },
         success: function (data) {
             if(data.code==200){
+                var result=data.result;
+                $.cookie("userIdStr",result.userIdStr);
+                $.cookie("userName",result.userName);
+                $.cookie("trueName",result.trueName);
                 window.location.href=ctx+"/main";
             }else{
                 alert(data.msg)
