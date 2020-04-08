@@ -14,15 +14,15 @@ function openTab(text, url, iconCls){
 
 
 function logout() {
-    $.messager.confirm("来自crm","确定退出系统?",function (r) {
+    $.messager.confirm("系统消息","你确定要退出吗？",function (r) {
         if(r){
             $.removeCookie("userIdStr");
             $.removeCookie("userName");
             $.removeCookie("trueName");
-            $.messager.alert("来自crm","系统将在三秒后自动退出...","info");
-            setTimeout(function () {
+            $.messager.alert("系统消息","系统将在三秒后自动退出……","info")
+            window.setTimeout(function () {
                 window.location.href=ctx+"/index";
-            },3000);
+            },3000)
         }
     })
 }
@@ -39,17 +39,17 @@ function modifyPassword() {
             return $("#fm").form("validate");
         },
         success:function (data) {
-            data =JSON.parse(data);
+            var data = JSON.parse(data);
             if(data.code==200){
-                $.messager.alert("来自crm","密码修改成功,系统将在5秒后执行退出操作...","info");
                 $.removeCookie("userIdStr");
                 $.removeCookie("userName");
                 $.removeCookie("trueName");
-                setTimeout(function () {
+                $.messager.alert("系统消息","密码修改成功，系统将在三秒后退出，请重新登录……","info")
+                window.setTimeout(function () {
                     window.location.href=ctx+"/index";
-                },5000)
+                },3000)
             }else{
-                $.messager.alert("来自crm",data.msg,"error");
+                $.messager.alert("系统消息",data.msg,"error");
             }
         }
     })
