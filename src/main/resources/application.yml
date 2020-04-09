@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /crm
-  port: 8989
+  port: 8080
 ## 数据源配置
 spring:
   datasource:
