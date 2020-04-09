@@ -1,6 +1,7 @@
 package com.cl.crm;
 
 import com.alibaba.fastjson.JSON;
+import com.cl.crm.exceptions.NoLoginException;
 import com.cl.crm.exceptions.ParamsException;
 import com.cl.crm.modal.ResultInfo;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,16 @@ import java.io.PrintWriter;
 public class GlobalExceptionResolver implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
+
+        ModelAndView mv = new ModelAndView();
+        if(e instanceof NoLoginException){
+            mv.setViewName("no_login");
+            mv.addObject("code",((NoLoginException) e).getCode());
+            mv.addObject("msg",((NoLoginException) e).getMsg());
+            mv.addObject("ctx",request.getContextPath());
+            return mv;
+        }
+
         /**方法返回值类型判断:
          *    如果方法级别存在@ResponseBody 方法响应内容为json  否则视图
          *    handler 参数类型为HandlerMethod
@@ -26,7 +37,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
          *
          *    json:错误的json信息
          */
-        ModelAndView mv = new ModelAndView();
+
         mv.setViewName("error");
         mv.addObject("code",500);
         mv.addObject("msg","系统异常！");
