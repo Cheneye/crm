@@ -63,4 +63,47 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
         AssertUtil.isTrue(!(PhoneUtil.isMobile(linkPhone)),"联系电话输入不合法！");
     }
 
+    public void updateSaleChance(SaleChance saleChance){
+        /**
+         * 1.参数校验
+         *      id 记录存在校验
+         *      customerName:非空
+         *      linkMan:非空
+         *      linkPhone:非空 11位手机号
+         * 2. 设置相关参数值
+         *      updateDate:系统当前时间
+         *         原始记录 未分配 修改后改为已分配(由分配人决定)
+         *            state 0->1
+         *            assginTime 系统当前时间
+         *            devResult 0-->1
+         *         原始记录  已分配  修改后 为未分配
+         *            state  1-->0
+         *            assignTime  待定  null
+         *            devResult 1-->0
+         * 3.执行更新 判断结果
+         */
+
+        AssertUtil.isTrue(null==saleChance.getId(),"待更新记录不存在！");
+        SaleChance temp = selectByPrimaryKey(saleChance.getId());
+        AssertUtil.isTrue(null==temp,"待更新记录不存在！");
+        checkParams(saleChance.getCustomerName(),saleChance.getLinkMan(),saleChance.getLinkPhone());
+        saleChance.setUpdateDate(new Date());
+        if(StringUtils.isBlank(temp.getAssignMan()) && StringUtils.isNotBlank(saleChance.getAssignMan())){
+            saleChance.setState(StateStatus.STATED.getType());
+            saleChance.setAssignTime(new Date());
+            saleChance.setDevResult(DevResult.DEVING.getType());
+        }else if(StringUtils.isNotBlank(temp.getAssignMan()) && StringUtils.isBlank(saleChance.getAssignMan())){
+            saleChance.setAssignMan("");
+            saleChance.setState(StateStatus.UNSTATE.getType());
+            saleChance.setAssignTime(null);
+            saleChance.setDevResult(DevResult.UNDEV.getType());
+        }
+        AssertUtil.isTrue(updateByPrimaryKeySelective(saleChance)<1,"数据更新失败！");
+    }
+
+    public void deleteSaleChance(Integer[] ids){
+        AssertUtil.isTrue(ids.length==0 || null==ids,"待删除数据为空！");
+        AssertUtil.isTrue(ids.length>deleteBatch(ids),"删除数据失败！");
+    }
+
 }

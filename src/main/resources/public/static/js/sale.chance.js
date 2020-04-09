@@ -62,8 +62,15 @@ function clearForm() {
 }
 
 function saveOrUpdateSaleChance() {
+    //添加操作的后台访问路径
+    var url=ctx+"/sale_chance/save";
+    var id=$("input[name='id']").val();
+    //更新操作的后台访问路径
+    if(!isEmpty(id)){
+        url=ctx+"/sale_chance/update";
+    }
     $("#fm").form("submit",{
-        url:ctx+"/sale_chance/save",
+        url:url,
         OnSubmit:function () {
             return $("#fm").form("validate")
         },
@@ -80,6 +87,56 @@ function saveOrUpdateSaleChance() {
             }else {
                 $.messager.confirm("系统消息",data.msg,"error")
             }
+        }
+    })
+}
+
+function openSaleChanceModifyDialog() {
+    var rows=$("#dg").datagrid("getSelections");
+    if(rows.length==0){
+        $.messager.confirm("系统消息","请选择待更新的记录！","warning")
+        return;
+    }
+    if(rows.length>1){
+        $.messager.confirm("系统消息","暂不支持多条记录更新！","warning")
+        return;
+    }
+    $("#fm").form("load",rows[0]);
+    $("#dlg").dialog("open").dialog("setTitle","更新数据");
+
+}
+
+function deleteSaleChance() {
+    var rows=$("#dg").datagrid("getSelections");
+    if(rows.length==0){
+        $.messager.alert("系统消息","请选择待删除的记录！","warning")
+        return;
+    }
+    $.messager.confirm("系统消息","你确定要删除记录吗？",function (r) {
+        if(r){
+            var ids= "ids=";
+            for(var i=0;i<rows.length;i++){
+                if(i<rows.length-1){
+                    ids=ids+rows[i].id+"&ids=";
+                }else {
+                    ids=ids+rows[i].id
+                }
+            }
+            $.ajax({
+                url:ctx+"/sale_chance/delete",
+                type:"post",
+                data:ids,
+                dataType:"json",
+                success:function (data) {
+                    // var data=JSON.parse(data);
+                    if(data.code==200){
+                        //刷新表格
+                        searchSaleChance();
+                    }else {
+                        $.messager.alert("系统消息",data.msg,"error")
+                    }
+                }
+            })
         }
     })
 }

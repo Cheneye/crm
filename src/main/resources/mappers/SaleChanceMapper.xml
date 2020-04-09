@@ -27,7 +27,7 @@
     select 
     <include refid="Base_Column_List" />
     from t_sale_chance
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_valid=1;
   </select>
   <select id="selectByParams" parameterType="com.cl.crm.query.SaleChanceQuery" resultType="com.cl.crm.po.SaleChance">
         select <include refid="Base_Column_List"/>
@@ -182,9 +182,7 @@
       <if test="assignMan != null">
         assign_man = #{assignMan,jdbcType=VARCHAR},
       </if>
-      <if test="assignTime != null">
         assign_time = #{assignTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="state != null">
         state = #{state,jdbcType=INTEGER},
       </if>
@@ -202,5 +200,14 @@
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="deleteBatch">
+    update t_sale_chance
+    set is_valid=0
+    where id in
+    <foreach collection="array" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </update>
 </mapper>
