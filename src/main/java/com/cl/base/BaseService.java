@@ -1,8 +1,13 @@
 package com.cl.base;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class BaseService<T,ID> {
 
@@ -98,5 +103,19 @@ public abstract class BaseService<T,ID> {
      */
     public Integer deleteBatch(ID[] ids) throws DataAccessException{
         return baseMapper.deleteBatch(ids);
+    }
+
+    /**
+     * 分页查询
+     * @param baseQuery
+     * @return
+     */
+    public Map<String,Object> queryByParamsForDataGrid(BaseQuery baseQuery){
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        PageHelper.startPage(baseQuery.getPage(),baseQuery.getRows());
+        PageInfo<T> pageInfo = new PageInfo<T>(selectByParams(baseQuery));
+        map.put("total",pageInfo.getTotal());
+        map.put("rows",pageInfo.getList());
+        return map;
     }
 }

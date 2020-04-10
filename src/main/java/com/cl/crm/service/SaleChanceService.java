@@ -18,6 +18,7 @@ import java.util.Map;
 @Service
 public class SaleChanceService extends BaseService<SaleChance,Integer> {
 
+
     public Map<String,Object> querySaleChancesByParams(SaleChanceQuery saleChanceQuery){
         HashMap<String, Object> map = new HashMap<>();
         PageHelper.startPage(saleChanceQuery.getPage(),saleChanceQuery.getRows());
@@ -106,4 +107,11 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
         AssertUtil.isTrue(ids.length>deleteBatch(ids),"删除数据失败！");
     }
 
+    public void updateDevResult(Integer devResult,Integer id){
+        AssertUtil.isTrue(null==id,"记录不存在！");
+        SaleChance temp = selectByPrimaryKey(id);
+        AssertUtil.isTrue(null==temp,"记录不存在！");
+        temp.setDevResult(devResult);
+        AssertUtil.isTrue(updateByPrimaryKeySelective(temp)<1,"操作失败！");
+    }
 }

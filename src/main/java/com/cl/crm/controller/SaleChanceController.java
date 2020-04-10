@@ -8,6 +8,7 @@ import com.cl.crm.service.SaleChanceService;
 import com.cl.crm.service.UserService;
 import com.cl.crm.utils.LoginUserUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,6 +31,7 @@ public class SaleChanceController extends BaseController {
         return "sale_chance";
     }
 
+
     @RequestMapping("list")
     @ResponseBody
     public Map<String,Object> querySaleChancesByParams(SaleChanceQuery saleChanceQuery){
@@ -50,6 +52,13 @@ public class SaleChanceController extends BaseController {
     public ResultInfo updateSaleChance(SaleChance saleChance){
         saleChanceService.updateSaleChance(saleChance);
         return success("数据更新成功！");
+    }
+
+    @RequestMapping("updateDevResult")
+    @ResponseBody
+    public ResultInfo updateDevResult(Integer devResult,Integer id){
+        saleChanceService.updateDevResult(devResult,id);
+        return success("操作成功！");
     }
 
     @RequestMapping("delete")
