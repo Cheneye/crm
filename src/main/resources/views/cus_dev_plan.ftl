@@ -2,9 +2,9 @@
 <html>
 <head>
     <#include "common.ftl" >
+    <script type="text/javascript" src="${ctx}/static/jquery-easyui-1.3.3/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="${ctx}/static/js/common.js"></script>
     <script type="text/javascript" src="${ctx}/static/js/sale.chance.js"></script>
-    <script type="text/javascript" src="${ctx}/static/jquery-easyui-1.3.3/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="${ctx}/static/js/cus.dev.plan.js"></script>
 </head>
 <body style="margin: 1px">
@@ -32,6 +32,11 @@
     <div>
         客户名称： <input type="text" id="s_customerName" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
         创建人： <input type="text" id="s_createMan" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
+        <#--分配状态： <select class="easyui-combobox" id="s_state" editable="false" panelHeight="auto" >
+            <option value="">请选择...</option>
+            <option value="0">未分配</option>
+            <option value="1">已分配</option>
+        </select>-->
         <a href="javascript:searchSaleChance()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.cl.base;
 
+import com.cl.crm.po.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +111,13 @@ public abstract class BaseService<T,ID> {
      * @param baseQuery
      * @return
      */
-    public Map<String,Object> queryByParamsForDataGrid(BaseQuery baseQuery){
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        PageHelper.startPage(baseQuery.getPage(),baseQuery.getRows());
+    public Map<String, Object> queryByParamsForDataGrid(BaseQuery baseQuery) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        PageHelper.startPage(baseQuery.getPage(), baseQuery.getRows());
         PageInfo<T> pageInfo = new PageInfo<T>(selectByParams(baseQuery));
-        map.put("total",pageInfo.getTotal());
-        map.put("rows",pageInfo.getList());
-        return map;
+        result.put("total", pageInfo.getTotal());
+        result.put("rows", pageInfo.getList());
+        return result;
     }
+
 }
