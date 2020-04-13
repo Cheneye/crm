@@ -1,6 +1,7 @@
 package com.cl.crm;
 
 import com.alibaba.fastjson.JSON;
+import com.cl.crm.exceptions.AuthFailedException;
 import com.cl.crm.exceptions.NoLoginException;
 import com.cl.crm.exceptions.ParamsException;
 import com.cl.crm.modal.ResultInfo;
@@ -52,6 +53,10 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     mv.addObject("code",((ParamsException) e).getCode());
                     mv.addObject("msg",((ParamsException) e).getMsg());
                 }
+                if(e instanceof AuthFailedException){
+                    mv.addObject("code",((AuthFailedException) e).getCode());
+                    mv.addObject("msg",((AuthFailedException) e).getMsg());
+                }
                 return mv;
             }else{
                 /**
@@ -63,6 +68,10 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 if(e instanceof ParamsException){
                     resultInfo.setCode(((ParamsException) e).getCode());
                     resultInfo.setMsg(((ParamsException) e).getMsg());
+                }
+                if(e instanceof AuthFailedException){
+                    resultInfo.setCode(((AuthFailedException) e).getCode());
+                    resultInfo.setMsg(((AuthFailedException) e).getMsg());
                 }
                 //通过流的形式输出json
                 response.setCharacterEncoding("utf-8");

@@ -1,13 +1,19 @@
 package com.cl.crm.service;
 
 import com.cl.base.BaseService;
+import com.cl.crm.dao.ModuleMapper;
+import com.cl.crm.dao.PermissionMapper;
 import com.cl.crm.dao.RoleMapper;
+import com.cl.crm.po.Permission;
 import com.cl.crm.po.Role;
 import com.cl.crm.utils.AssertUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +23,12 @@ public class RoleService extends BaseService<Role,Integer> {
 
     @Resource
     private RoleMapper roleMapper;
+
+    @Resource
+    private PermissionMapper permissionMapper;
+
+    @Resource
+    private ModuleMapper moduleMapper;
 
     public List<Map<String,Object>> queryAllRoles(){
        return roleMapper.queryAllRoles();
@@ -30,6 +42,8 @@ public class RoleService extends BaseService<Role,Integer> {
         role.setUpdateDate(new Date());
         role.setIsValid(1);
         AssertUtil.isTrue(insertSelective(role)<1,"角色添加失败！");
+
+
     }
 
     public void updateRole(Role role) {
@@ -49,4 +63,27 @@ public class RoleService extends BaseService<Role,Integer> {
         temp.setUpdateDate(new Date());
         AssertUtil.isTrue(updateByPrimaryKeySelective(temp)<1,"角色删除失败！");
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addGrant(Integer roleId,Integer[] mids){
+        AssertUtil.isTrue(null==roleId || null==selectByPrimaryKey(roleId),"授权用户不存在！" );
+        Integer count = permissionMapper.countPermissionByRoleId(roleId);
+        if(count>0){
+            AssertUtil.isTrue(permissionMapper.deletePermissionsByRoleId(roleId)<1,"权限分配失败！");
+        }
+        if(null!=mids && mids.length>0){
+            List<Permission> permissions =new ArrayList<>();
+            for (Integer mid : mids){
+                Permission permission = new Permission();
+                permission.setRoleId(roleId);
+                permission.setModuleId(mid);
+                permission.setCreateDate(new Date());
+                permission.setUpdateDate(new Date());
+                permission.setAclValue(moduleMapper.selectByPrimaryKey(mid).getOptValue());
+                permissions.add(permission);
+            }
+            AssertUtil.isTrue(permissionMapper.insertBatch(permissions)<mids.length,"授权失败！");
+        }
+    }
+
 }

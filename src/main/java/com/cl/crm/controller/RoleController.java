@@ -57,5 +57,12 @@ public class RoleController extends BaseController {
         return success("角色删除成功！");
     }
 
+    @RequestMapping("addGrant")
+    @ResponseBody
+    public ResultInfo addGrant(Integer roleId,Integer[] mids){
+        roleService.addGrant(roleId,mids);
+        return success("授权成功！");
+    }
+
 
 }
