@@ -24,17 +24,27 @@
     </thead>
 </table>
 <div id="tb">
+    <#if permissions??>
     <div>
+        <#if permissions?seq_contains("601001")>
         <a href="javascript:openUserAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">创建</a>
+        </#if>
+        <#if permissions?seq_contains("601003")>
         <a href="javascript:openUserModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        </#if>
+        <#if permissions?seq_contains("601004")>
         <a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        </#if>
     </div>
+    <#if permissions?seq_contains("601002")>
     <div>
         用户名： <input type="text" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchUsers()"/>
         手机号： <input type="text" id="s_phone" size="20" onkeydown="if(event.keyCode==13) searchUsers()"/>
         真实名： <input type="text" id="s_trueName" size="20" onkeydown="if(event.keyCode==13) searchUsers()"/>
         <a href="javascript:searchUsers()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>
+    </#if>
+    </#if>
 </div>
 
 

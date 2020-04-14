@@ -23,7 +23,7 @@
     select
     <include refid="Base_Column_List" />
     from t_module
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_valid=1
   </select>
   <select id="queryAllModules" resultType="com.cl.crm.dto.TreeDto">
     select
@@ -155,4 +155,65 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByParams" parameterType="com.cl.crm.query.ModuleQuery" resultType="com.cl.crm.po.Module">
+    select <include refid="Base_Column_List"></include> from t_module
+    <where>
+        is_valid=1
+      <if test="null!=grade">
+        and grade=#{grade}
+      </if>
+      <if test="null !=moduleName and moduleName !=''">
+        and module_name =#{moduleName}
+      </if>
+      <if test="null !=code and code !=''">
+        and opt_value =#{code}
+      </if>
+      <if test="null !=pId">
+        and parent_id=#{pId}
+      </if>
+    </where>
+  </select>
+  <select id="queryByModuleName" resultType="com.cl.crm.po.Module">
+    select <include refid="Base_Column_List"/> from t_module
+    where is_valid=1 and module_name=#{moduleName} and grade=#{grade}
+  </select>
+  <select id="queryByUrl" resultType="com.cl.crm.po.Module">
+    select <include refid="Base_Column_List"/> from t_module
+    where is_valid=1 and grade=#{grade} and url=#{url}
+  </select>
+  <select id="queryOptValue" parameterType="string" resultType="com.cl.crm.po.Module">
+    select  <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1 and opt_value=#{optValue}
+  </select>
+  <select id="queryAllModulesByGrade" parameterType="integer" resultType="java.util.Map">
+    select  id,module_name as moduleName
+      from t_module
+      where grade=#{grade} and is_valid=1
+  </select>
+    <select id="countModuleByParentId" parameterType="integer" resultType="java.lang.Integer">
+        select count(1) from t_module where is_valid=1 and parent_id=#{mid}
+    </select>
+  <select id="queryUserHasRoleHasModuleDtos" resultType="com.cl.crm.dto.ModuleDto">
+    SELECT
+          DISTINCT
+                m.id,
+                m.module_name,
+                m.module_style,
+                m.url
+          FROM
+                t_user_role ur,
+                t_permission p,
+                t_module m
+          <where>
+                ur.role_id = p.role_id
+                AND p.module_id = m.id
+                AND m.is_valid = 1
+                AND ur.user_id = #{userId}
+                AND m.grade = #{grade}
+                <if test="null !=parentId">
+                  and m.parent_id=#{parentId}
+                </if>
+          </where>
+  </select>
 </mapper>

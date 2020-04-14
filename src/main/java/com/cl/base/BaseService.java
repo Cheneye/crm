@@ -1,5 +1,6 @@
 package com.cl.base;
 
+import com.cl.crm.po.Module;
 import com.cl.crm.po.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

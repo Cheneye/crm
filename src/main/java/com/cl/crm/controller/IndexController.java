@@ -1,6 +1,8 @@
 package com.cl.crm.controller;
 
 import com.cl.base.BaseController;
+import com.cl.crm.dto.ModuleDto;
+import com.cl.crm.service.ModuleService;
 import com.cl.crm.service.PermissionService;
 import com.cl.crm.service.UserService;
 import com.cl.crm.utils.LoginUserUtil;
@@ -20,6 +22,9 @@ public class IndexController extends BaseController {
     @Resource
     private PermissionService permissionService;
 
+    @Resource
+    private ModuleService moduleService;
+
     @RequestMapping("/index")
     public String index(){
         return "index";
@@ -27,10 +32,16 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/main")
     public String main(HttpServletRequest request){
+
         int userId = LoginUserUtil.releaseUserIdFromCookie(request);
         request.setAttribute("user",userService.selectByPrimaryKey(userId));
+
         List<String> permissions = permissionService.queryUserHasRolesHasPermissions(userId);
         request.getSession().setAttribute("permissions",permissions);
-        return "main";
+
+        List<ModuleDto> moduleDtos = moduleService.queryUserHasRoleHasModuleDtos(userId);
+        request.getSession().setAttribute("modules",moduleDtos);
+
+        return "main_02";
     }
 }

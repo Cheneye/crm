@@ -103,3 +103,4 @@ function deleteRecode(dataGridId,deleteUrl,search) {
         }
     })
 }
+
