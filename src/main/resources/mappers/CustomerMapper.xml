@@ -278,4 +278,31 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByParams" parameterType="com.cl.crm.query.CustomerQuery" resultType="com.cl.crm.po.Customer">
+    select <include refid="Base_Column_List"/> from t_customer
+    <where>
+      is_valid=1
+      <!--
+         state  流失状态
+              0  未流失
+              1  已流失
+      -->
+      and state =0
+      <if test="cusName!='' and null!=cusName">
+        and name like concat('%',#{cusName},'%')
+      </if>
+      <if test="cusNo!='' and null!=cusNo">
+        and khno=#{cusNo}
+      </if>
+      <if test="level!='' and null!=level">
+        and level=#{level}
+      </if>
+      <if test="myd!='' and null!=myd">
+        and myd=#{myd}
+      </if>
+    </where>
+  </select>
+  <select id="queryCustomerByName" parameterType="string" resultType="com.cl.crm.po.Customer">
+    select <include refid="Base_Column_List"/> from t_customer where is_valid=1 and name=#{name}
+  </select>
 </mapper>

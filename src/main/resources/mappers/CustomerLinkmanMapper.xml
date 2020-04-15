@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cl.crm.dao.CustomerLinkmanMapper">
+  <resultMap id="BaseResultMap" type="com.cl.crm.po.CustomerLinkman">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cus_id" jdbcType="INTEGER" property="cusId" />
+    <result column="link_name" jdbcType="VARCHAR" property="linkName" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="zhiwei" jdbcType="VARCHAR" property="zhiwei" />
+    <result column="office_phone" jdbcType="VARCHAR" property="officePhone" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="ceate_date" jdbcType="TIMESTAMP" property="ceateDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cus_id, link_name, sex, zhiwei, office_phone, phone, is_valid, ceate_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_linkman
+    where id = #{id,jdbcType=INTEGER} and is_valid=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_customer_linkman
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.cl.crm.po.CustomerLinkman">
+    insert into t_customer_linkman
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cusId != null">
+        cus_id,
+      </if>
+      <if test="linkName != null">
+        link_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="zhiwei != null">
+        zhiwei,
+      </if>
+      <if test="officePhone != null">
+        office_phone,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="ceateDate != null">
+        ceate_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cusId != null">
+        #{cusId,jdbcType=INTEGER},
+      </if>
+      <if test="linkName != null">
+        #{linkName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwei != null">
+        #{zhiwei,jdbcType=VARCHAR},
+      </if>
+      <if test="officePhone != null">
+        #{officePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="ceateDate != null">
+        #{ceateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cl.crm.po.CustomerLinkman">
+    update t_customer_linkman
+    <set>
+      <if test="cusId != null">
+        cus_id = #{cusId,jdbcType=INTEGER},
+      </if>
+      <if test="linkName != null">
+        link_name = #{linkName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwei != null">
+        zhiwei = #{zhiwei,jdbcType=VARCHAR},
+      </if>
+      <if test="officePhone != null">
+        office_phone = #{officePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="ceateDate != null">
+        ceate_date = #{ceateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParams" parameterType="com.cl.crm.query.CustomerLinkmanQuery" resultType="com.cl.crm.po.CustomerLinkman">
+    select <include refid="Base_Column_List" /> from t_customer_linkman
+    <where>
+      is_valid=1
+      and cus_id=#{cusId}
+      <if test="null!=linkName and linkName!=''">
+        and link_name like concat('%',#{linkName},'%')
+      </if>
+      <if test="null!=zhiwei and zhiwei!=''">
+        and zhiwei=#{zhiwei}
+      </if>
+      <if test="null!=phone and phone!=''">
+        and phone=#{phone}
+      </if>
+    </where>
+  </select>
+    <select id="queryByPhone" resultType="com.cl.crm.po.CustomerLinkman">
+      select <include refid="Base_Column_List"/> from t_customer_linkman
+      where is_valid=1 and cus_id=#{cusId} and phone=#{phone}
+    </select>
+</mapper>
