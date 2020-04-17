@@ -2,19 +2,18 @@ package com.cl.crm.controller;
 
 import com.cl.base.BaseController;
 import com.cl.crm.annotaions.RequirePermission;
-import com.cl.crm.exceptions.ParamsException;
 import com.cl.crm.modal.ResultInfo;
 import com.cl.crm.modal.UserModal;
 import com.cl.crm.po.User;
 import com.cl.crm.query.UserQuery;
 import com.cl.crm.service.UserService;
 import com.cl.crm.utils.LoginUserUtil;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -80,6 +79,12 @@ public class UserController extends BaseController {
     public ResultInfo deleteUser(@RequestParam(name = "id") Integer userId){
         userService.deleteUser(userId);
         return success("用户删除成功！");
+    }
+
+    @RequestMapping("user/queryAllCustomerManager")
+    @ResponseBody
+    public List<Map<String,Object>> queryAllCustomerManager(){
+       return userService.queryAllCustomerManager();
     }
 
 }

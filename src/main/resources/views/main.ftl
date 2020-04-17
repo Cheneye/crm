@@ -69,16 +69,16 @@
                 <#if permissions?seq_contains("40")>
                     <div title="统计报表"  data-options="iconCls:'icon-tjbb'" style="padding:10px">
                         <#if permissions?seq_contains("4010")>
-                            <a href="javascript:openTab('客户贡献分析','report/0','icon-khgxfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khgxfx'" style="width: 150px;">客户贡献分析</a>
+                            <a href="javascript:openTab('客户贡献分析','report/1','icon-khgxfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khgxfx'" style="width: 150px;">客户贡献分析</a>
                         </#if>
                         <#if permissions?seq_contains("4020")>
-                            <a href="javascript:openTab('客户构成分析','report/1','icon-khgcfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khgcfx'" style="width: 150px;">客户构成分析</a>
+                            <a href="javascript:openTab('客户构成分析','report/2','icon-khgcfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khgcfx'" style="width: 150px;">客户构成分析</a>
                         </#if>
                         <#if permissions?seq_contains("4030")>
-                            <a href="javascript:openTab('客户服务分析','report/2','icon-khfwfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khfwfx'" style="width: 150px;">客户服务分析</a>
+                            <a href="javascript:openTab('客户服务分析','report/3','icon-khfwfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khfwfx'" style="width: 150px;">客户服务分析</a>
                         </#if>
                         <#if permissions?seq_contains("4040")>
-                            <a href="javascript:openTab('客户流失分析','report/3','icon-khlsfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khlsfx'" style="width: 150px;">客户流失分析</a>
+                            <a href="javascript:openTab('客户流失分析','report/4','icon-khlsfx')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khlsfx'" style="width: 150px;">客户流失分析</a>
                         </#if>
 
                     </div>
