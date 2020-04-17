@@ -28,7 +28,7 @@ function saveCustomerLinkman() {
 }
 function deleteCustomerLinkman() {
     $("#dg02").edatagrid("destroyRow");
-    $.messager.alert("系统消息",data.msg,"success");
+    // $.messager.alert("系统消息",data.msg,"success");
     $("#dg02").edatagrid("load");
 }
 function searchCustomerLinkman() {

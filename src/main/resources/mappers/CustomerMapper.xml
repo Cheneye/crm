@@ -278,6 +278,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateStateBatchByIds" parameterType="integer">
+     update t_customer set state=1 where id in
+     <foreach collection="list" item="item" open="(" separator="," close=")">
+       #{item}
+     </foreach>
+  </update>
   <select id="selectByParams" parameterType="com.cl.crm.query.CustomerQuery" resultType="com.cl.crm.po.Customer">
     select <include refid="Base_Column_List"/> from t_customer
     <where>
@@ -304,5 +310,14 @@
   </select>
   <select id="queryCustomerByName" parameterType="string" resultType="com.cl.crm.po.Customer">
     select <include refid="Base_Column_List"/> from t_customer where is_valid=1 and name=#{name}
+  </select>
+
+  <select id="queryCustomerLoss" resultType="com.cl.crm.po.Customer">
+    select * from t_customer
+    where is_valid=1 and state=0 and DATE_ADD(create_date,INTERVAL 6 MONTH) &lt;NOW()
+    and id not in(
+    select cus_id from t_customer_order co
+    where co.is_valid=1 and co.state=1 and DATE_ADD(co.create_date,INTERVAL 6 MONTH) &gt;NOW()
+    );
   </select>
 </mapper>

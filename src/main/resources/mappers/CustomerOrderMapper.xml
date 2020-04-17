@@ -141,4 +141,9 @@
        from t_customer_order o left join t_order_details d on o.id=d.order_id
        where o.id=#{orderId} and o.is_valid=1 and  d.is_valid=1
   </select>
+  
+  <select id="queryLastCustomerOrderByCusId" parameterType="integer" resultType="com.cl.crm.po.CustomerOrder">
+    select * from t_customer_order
+    where is_valid=1 and state=1 and cus_id=#{cusId} ORDER BY order_date desc LIMIT 1;
+  </select>
 </mapper>
