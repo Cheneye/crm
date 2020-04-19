@@ -60,4 +60,22 @@ public class CustomerController extends BaseController {
         return "customer_order";
     }
 
+    @RequestMapping("queryCustomerContributionByParams")
+    @ResponseBody
+    public Map<String,Object> queryCustomerContributionByParams(CustomerQuery customerQuery){
+        return customerService.queryCustomerContributionByParams(customerQuery);
+    }
+
+    @RequestMapping("queryCustomerMake")
+    @ResponseBody
+    public Map<String,Object> queryCustomerMake(){
+        return customerService.queryCustomerMake();
+    }
+
+    @RequestMapping("queryCustomerService")
+    @ResponseBody
+    public Map<String,Object> queryCustomerService(){
+        return customerService.queryCustomerService();
+    }
+
 }

@@ -311,7 +311,6 @@
   <select id="queryCustomerByName" parameterType="string" resultType="com.cl.crm.po.Customer">
     select <include refid="Base_Column_List"/> from t_customer where is_valid=1 and name=#{name}
   </select>
-
   <select id="queryCustomerLoss" resultType="com.cl.crm.po.Customer">
     select * from t_customer
     where is_valid=1 and state=0 and DATE_ADD(create_date,INTERVAL 6 MONTH) &lt;NOW()
@@ -319,5 +318,57 @@
     select cus_id from t_customer_order co
     where co.is_valid=1 and co.state=1 and DATE_ADD(co.create_date,INTERVAL 6 MONTH) &gt;NOW()
     );
+  </select>
+  <select id="queryCustomerContributionByParams" parameterType="com.cl.crm.query.CustomerQuery" resultType="java.util.Map">
+    select
+    c.name,
+    sum(d.sum) as total
+    FROM
+    t_customer c
+    LEFT JOIN t_customer_order o ON c.id = o.cus_id
+    LEFT JOIN t_order_details d ON o.id = d.order_id
+    <where>
+      c.is_valid = 1
+      AND o.state = 1
+      <if test="null !=cusName and cusName!=''">
+        and c.name like concat('%',#{cusName},'%')
+      </if>
+      <if test="null !=time">
+        and o.order_date &gt;#{time}
+      </if>
+    </where>
+    GROUP BY c.name
+    <if test="null !=type and type !=''">
+      <if test="type ==1 ">
+        HAVING   total &lt;=1000
+      </if>
+      <if test="type ==2">
+        HAVING total &gt;1000 and total &lt;=3000
+      </if>
+      <if test="type ==3">
+        HAVING total &gt;3000 and total &lt;=5000
+      </if>
+      <if test="type ==4">
+        HAVING  total &gt;5000
+      </if>
+    </if>
+    ORDER BY  total DESC
+  </select>
+  <select id="queryCustomerMake" resultType="java.util.Map">
+    select level as name,count(1) as value from t_customer
+    where is_valid=1 and state=0
+    GROUP BY level
+  </select>
+  <select id="queryCustomerService" resultType="java.util.Map">
+    select case myd
+    when "☆" then "一星"
+    when "☆☆" then "二星"
+    when "☆☆☆" then "三星"
+    when "☆☆☆☆" then "四星"
+    when "☆☆☆☆☆" then "五星"
+    else "未评价" end
+    as name,count(1) as value from t_customer
+    where is_valid=1 and state=0
+    GROUP BY myd
   </select>
 </mapper>

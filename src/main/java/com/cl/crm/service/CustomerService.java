@@ -7,8 +7,11 @@ import com.cl.crm.dao.CustomerOrderMapper;
 import com.cl.crm.po.Customer;
 import com.cl.crm.po.CustomerLoss;
 import com.cl.crm.po.CustomerOrder;
+import com.cl.crm.query.CustomerQuery;
 import com.cl.crm.utils.AssertUtil;
 import com.cl.crm.utils.PhoneUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CustomerService extends BaseService<Customer,Integer> {
@@ -116,4 +117,41 @@ public class CustomerService extends BaseService<Customer,Integer> {
 
     }
 
+    public Map<String, Object> queryCustomerContributionByParams(CustomerQuery customerQuery) {
+        Map<String, Object> result = new HashMap<>();
+        PageHelper.startPage(customerQuery.getPage(),customerQuery.getRows());
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(customerMapper.queryCustomerContributionByParams(customerQuery));
+        result.put("total",pageInfo.getTotal());
+        result.put("rows",pageInfo.getList());
+        return result;
+    }
+    public Map<String, Object> queryCustomerMake() {
+        Map<String, Object> map = new HashMap<>();
+        List<Map<String, Object>> mapLists = customerMapper.queryCustomerMake();
+        List<String> data1 = new ArrayList<>();
+        List<Object> data2 = new ArrayList<>();
+        mapLists.forEach(mapList -> {
+            data1.add(mapList.get("name").toString());
+            data2.add(Integer.parseInt(mapList.get("value")+""));
+        });
+        map.put("data1",data1);
+        map.put("data2",data2);
+        map.put("mapLists",mapLists);
+        return map;
+    }
+
+    public Map<String, Object> queryCustomerService() {
+        Map<String, Object> map = new HashMap<>();
+        List<Map<String, Object>> mapLists = customerMapper.queryCustomerService();
+        List<String> data1 = new ArrayList<>();
+        List<Object> data2 = new ArrayList<>();
+        mapLists.forEach(mapList -> {
+            data1.add(mapList.get("name").toString());
+            data2.add(Integer.parseInt(mapList.get("value")+""));
+        });
+        map.put("data1",data1);
+        map.put("data2",data2);
+        map.put("mapLists",mapLists);
+        return map;
+    }
 }
