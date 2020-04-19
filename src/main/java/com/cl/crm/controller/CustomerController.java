@@ -1,6 +1,7 @@
 package com.cl.crm.controller;
 
 import com.cl.base.BaseController;
+import com.cl.crm.annotaions.CrmLog;
 import com.cl.crm.modal.ResultInfo;
 import com.cl.crm.po.Customer;
 import com.cl.crm.query.CustomerQuery;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("customer")
+@CrmLog(Module = "客户信息管理")
 public class CustomerController extends BaseController {
 
     @Resource
@@ -26,12 +28,14 @@ public class CustomerController extends BaseController {
         return "customer";
     }
 
+    @CrmLog(Operation = "客户信息多条件查询")
     @RequestMapping("list")
     @ResponseBody
     public Map<String,Object> queryCustomerByParams(CustomerQuery customerQuery){
         return customerService.queryByParamsForDataGrid(customerQuery);
     }
 
+    @CrmLog(Operation = "客户信息添加")
     @RequestMapping("save")
     @ResponseBody
     public ResultInfo saveCustomer(Customer customer){
@@ -39,6 +43,7 @@ public class CustomerController extends BaseController {
         return success("客户信息添加成功！");
     }
 
+    @CrmLog(Operation = "客户信息更新")
     @RequestMapping("update")
     @ResponseBody
     public ResultInfo updateCustomer(Customer customer){
@@ -46,6 +51,7 @@ public class CustomerController extends BaseController {
         return success("客户信息更新成功！");
     }
 
+    @CrmLog(Operation = "客户信息删除")
     @RequestMapping("delete")
     @ResponseBody
     public ResultInfo deleteCustomer(Integer id){

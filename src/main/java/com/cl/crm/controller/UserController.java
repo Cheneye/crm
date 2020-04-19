@@ -1,6 +1,7 @@
 package com.cl.crm.controller;
 
 import com.cl.base.BaseController;
+import com.cl.crm.annotaions.CrmLog;
 import com.cl.crm.annotaions.RequirePermission;
 import com.cl.crm.modal.ResultInfo;
 import com.cl.crm.modal.UserModal;
@@ -28,6 +29,7 @@ public class UserController extends BaseController {
        return userService.selectByPrimaryKey(userId);
     }
 
+    @CrmLog(Module = "用户登录")
     @PostMapping("user/login")
     @ResponseBody
     public ResultInfo login(String userName,String userPwd){
